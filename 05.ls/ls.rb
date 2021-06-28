@@ -9,7 +9,7 @@ def main(options)
   files = options['r'] ? use_files.sort.reverse : use_files
 
   if options['l']
-    file_total
+    file_total(use_files)
     files.each do |file|
       puts l_option(file)
     end
@@ -18,10 +18,10 @@ def main(options)
   end
 end
 
-def file_total
+def file_total(file)
   total = []
-  Dir.foreach('.') do |item|
-    total << File.stat(item).blksize / 512
+  file.each do |one_file|
+    total << File.stat(one_file).blocks
   end
   puts "total #{total.sum}"
 end
@@ -35,11 +35,13 @@ def l_option(file)
   owner_permission = convert_to_permissions(permissions_num[0])
   group_permission = convert_to_permissions(permissions_num[1])
   other_permission = convert_to_permissions(permissions_num[2])
+  hardlink = fs.nlink
   user = Etc.getpwuid(fs.uid).name
   group = Etc.getgrgid(fs.gid).name
-  hardlink = fs.nlink
+  size = File.size(file)
+  time = File.mtime(file).strftime('%m %d %k:%M')
   base = File.basename(file)
-  print "#{filetype}#{owner_permission}#{group_permission}#{other_permission}\t#{hardlink}\t#{group}\t#{user}\t#{File.size(file)}#{File.ctime(file)}#{base}\t"
+  print "#{filetype}#{owner_permission}#{group_permission}#{other_permission}\t#{hardlink}\t#{user}\t#{group}\t#{size}\t#{time}\t#{base}\t"
 end
 
 def convert_to_filetype(filetype_num)
@@ -50,7 +52,7 @@ def convert_to_filetype(filetype_num)
     '06': 'b',
     '10': '-',
     '12': 'l',
-    '14': 's'
+    '14': 's
   } [filetype_num.to_sym]
 end
 
