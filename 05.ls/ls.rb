@@ -5,28 +5,26 @@ require 'fileutils'
 require 'etc'
 
 def main(options)
-  use_files = options['a'] ? Dir.glob('*', File::FNM_DOTMATCH) : Dir.glob('*')
-  files = options['r'] ? use_files.sort.reverse : use_files
+  files = options['a'] ? Dir.glob('*', File::FNM_DOTMATCH) : Dir.glob('*')
+  files = options['r'] ? files.reverse : files
 
   if options['l']
-    file_total(use_files)
+    output_file_total(files)
     files.each do |file|
-      puts l_option(file)
+      output_long_option(file)
     end
   else
-    no_option(files)
+    output_nomal_option(files)
   end
 end
 
-def file_total(file)
+def output_file_total(file)
   total = []
-  file.each do |one_file|
-    total << File.stat(one_file).blocks
-  end
+  file.map { |one_file| total << File.stat(one_file).blocks }
   puts "total #{total.sum}"
 end
 
-def l_option(file)
+def output_long_option(file)
   fs = File::Stat.new(file)
   mode_num = fs.mode.to_s(8).rjust(6, '0')
   filetype_num = mode_num[0..1]
@@ -41,7 +39,7 @@ def l_option(file)
   size = File.size(file)
   time = File.mtime(file).strftime('%m %d %k:%M')
   base = File.basename(file)
-  print "#{filetype}#{owner_permission}#{group_permission}#{other_permission}\t#{hardlink}\t#{user}\t#{group}\t#{size}\t#{time}\t#{base}\t"
+  puts "#{filetype}#{owner_permission}#{group_permission}#{other_permission}\t#{hardlink}\t#{user}\t#{group}\t#{size}\t#{time}\t#{base}\t"
 end
 
 def convert_to_filetype(filetype_num)
@@ -52,7 +50,7 @@ def convert_to_filetype(filetype_num)
     '06': 'b',
     '10': '-',
     '12': 'l',
-    '14': 's
+    '14': 's'
   } [filetype_num.to_sym]
 end
 
@@ -69,23 +67,22 @@ def convert_to_permissions(permissions_num)
   } [permissions_num.to_sym]
 end
 
-def no_option(file)
-  slice_number = if (file.size % 3).zero?
-                   file.size / 3
+def output_nomal_option(file)
+  line = 3
+  slice_number = if (file.size % line).zero?
+                   file.size / line
                  else
-                   file.size / 3 + 1
+                   file.size / line + 1
                  end
-  sliced_file = []
-  file.each_slice(slice_number) { |s| sliced_file << s }
+  sliced_file = file.each_slice(slice_number).to_a
   (sliced_file.first.length - sliced_file.last.length).times { sliced_file.last.push('') } unless sliced_file.last.length == sliced_file.first.length
   transposed_sliced_file = sliced_file.transpose
-  transposed_sliced_file.max_by(&:length)
   num_for_spaces = file.max_by(&:size).size + 10
   transposed_sliced_file.each do |ary|
-    print ary[0] + ' ' * (num_for_spaces - ary[0].size)
-    print ary[1] + ' ' * (num_for_spaces - ary[1].size)
-    print ary[2]
-    print "\n"
+    ary.each_with_index do |element, idx|
+      print element + ' ' * (num_for_spaces - element.size)
+      print "\n" if ((idx + 1) % line).zero?
+    end
   end
 end
 
