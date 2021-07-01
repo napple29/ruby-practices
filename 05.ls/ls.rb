@@ -6,7 +6,7 @@ require 'etc'
 
 def main(options)
   files = options['a'] ? Dir.glob('*', File::FNM_DOTMATCH) : Dir.glob('*')
-  files = options['r'] ? files.reverse : files
+  files = files = files.reverse if options['r'] 
 
   if options['l']
     output_file_total(files)
@@ -20,7 +20,7 @@ end
 
 def output_file_total(file)
   total = []
-  file.map { |one_file| total << File.stat(one_file).blocks }
+  total = file.map { |one_file| File.stat(one_file).blocks }
   puts "total #{total.sum}"
 end
 
