@@ -1,83 +1,77 @@
 # frozen_string_literal: true
 
 require 'optparse'
-options = ARGV.getopts('l')
 
-def main(options)
-  files = ARGV[0] ? ARGV : $stdin.read
-
-  if ARGV[0] && options['l']
-    output_argv_l_option(files)
-  elsif ARGV[0]
-    output_nomal_function(files)
-  elsif ARGV[1].nil? && options['l']
-    output_stdin_l_option(files)
+def main(options) 
+  if ARGV[0]
+    files = ARGV
+    output_files(files, options)
   else
-    output_stdin(files)
+    text = $stdin.read
+    output_stdin(text, options)
   end
 end
 
-def output_argv_l_option(files)
-  line_total = []
-  files.each do |file|
-    fs = File.open(file)
-    line_count = fs.read.chomp.count("\n") + 1
-    line_total << line_count
-    print line_count.to_s.rjust(8)
-    print " #{file}\n"
-  end
-  return unless files[1]
+DEFAULT_WIDTH = 8
 
-  print line_total.sum.to_s.rjust(8)
-  print " total\n"
-end
-
-def output_nomal_function(files)
+def output_files(files, options)
   line_total = []
   word_total = []
-  file_size_total = []
+  byte_size_total = []
   files.each do |file|
-    fs = File.open(file)
-    line_count = fs.read.chomp.count("\n") + 1
-    fs.rewind
-    word = fs.read.chomp.split(/\s+/)
-    word_count = word.count
-    file_size = File.size(file)
-
+    file_text = File.read(file)
+    line_count = count_line(file_text)
+    word_count = count_word(file_text)
+    byte_size = count_byte_size(file_text)
     line_total << line_count
     word_total << word_count
-    file_size_total << file_size
-
-    print line_count.to_s.rjust(8)
-    print word_count.to_s.rjust(8)
-    print file_size.to_s.rjust(8)
+    byte_size_total << byte_size
+    print_values(line_count, word_count, byte_size, options)
     print " #{file}\n"
   end
-  return unless files[1]
+  return if files.size == 1
 
-  print line_total.sum.to_s.rjust(8)
-  print word_total.sum.to_s.rjust(8)
-  print file_size_total.sum.to_s.rjust(8)
+  print_values_sum(line_total, word_total, byte_size_total, options)
   print " total\n"
 end
 
-def output_stdin(files)
-  line_count = files.chomp.count("\n")
-  word = files.chomp.split(/\s+/)
-  word_count = word.count
-  letter_count = files.length
+def print_values(line_count, word_count, byte_size, options)
+  print line_count.to_s.rjust(DEFAULT_WIDTH)
+  return if options['l']
 
-  print line_count.to_s.rjust(8)
-  print word_count.to_s.rjust(8)
-  print letter_count.to_s.rjust(8)
+  print word_count.to_s.rjust(DEFAULT_WIDTH)
+  print byte_size.to_s.rjust(DEFAULT_WIDTH)
+end
+
+def print_values_sum(line_total, word_total, byte_size_total, options)
+  print line_total.sum.to_s.rjust(DEFAULT_WIDTH)
+  return if options['l']
+
+  print word_total.sum.to_s.rjust(DEFAULT_WIDTH)
+  print byte_size_total.sum.to_s.rjust(DEFAULT_WIDTH)
+end
+
+def count_line(text)
+  text.lines.size
+end
+
+def count_word(text)
+  text.split(/\s+/).count
+end
+
+def count_byte_size(text)
+  text.length
+end
+
+def output_stdin(text, options)
+  line_count = count_line(text)
+  word_count = count_word(text)
+  byte_size = count_byte_size(text)
+
+  print_values(line_count, word_count, byte_size, options)
   print "\n"
 end
 
-def output_stdin_l_option(files)
-  line_count = files.chomp.count("\n")
-  print line_count.to_s.rjust(8)
-  print "\n"
-end
-
+options = ARGV.getopts('l')
 main(options)
 
