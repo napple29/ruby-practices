@@ -6,12 +6,12 @@ DEFAULT_WIDTH = 8
 
 def main
   options = ARGV.getopts('l')
-  if ARGV[0]
-    files = ARGV
-    output_files(files, options)
-  else
+  if ARGV.empty?
     text = $stdin.read
     output_stdin(text, options)
+  else
+    files = ARGV
+    output_files(files, options)
   end
 end
 
@@ -70,5 +70,4 @@ def output_stdin(text, options)
 end
 
 main
-
 
