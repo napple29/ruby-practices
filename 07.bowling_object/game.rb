@@ -6,17 +6,14 @@ class Game
 
     total = 0
     game.shots_into_frame[0..8].each.with_index(1) do |frame, index|
-      if frame[0] == 10
-        if game.shots_into_frame[index][1]
-          total += 10 + game.shots_into_frame[index][0] + game.shots_into_frame[index][1] #２投続けてストライクだとエラーになる
-        elsif game.shots_into_frame[index][1].nil?
-          total += 10 + game.shots_into_frame[index][0] + game.shots_into_frame[index + 1][0]
+      total += 
+        if frame[0] == 10
+          game.shots_into_frame[index][1]? 10 + game.shots_into_frame[index][0] + game.shots_into_frame[index][1] : 10 + game.shots_into_frame[index][0] + game.shots_into_frame[index + 1][0]
+        elsif frame.sum == 10
+          10 + game.shots_into_frame[index][0]
+        else
+          frame.sum
         end
-      elsif frame.sum ==10
-        total += 10 + game.shots_into_frame[index][0]
-      else
-        total += frame.sum
-      end
     end
 
     total
@@ -28,7 +25,7 @@ class Game
   end
 
   def total_score
-    calc_score.to_i + calc_score2.to_i
+    calc_score + calc_score2
   end
 end
 
