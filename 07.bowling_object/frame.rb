@@ -1,15 +1,24 @@
 require_relative './shot.rb'
 
 class Frame
-  attr_reader :first_shot, :second_shot, :third_shot
-  def initialize(first_mark, second_mark, third_mark = nil)
-    @first_shot = Shot.new(first_mark)
-    @second_shot = Shot.new(second_mark)
-    @third_shot = Shot.new(third_mark)
-  end
-  def score
-  # TODO
+  def shots_into_frame
+    shots = Shot.new
+    # shots.convert_to_shots #[6, 3, 9, 0, 0, 3, 8, 2, 7, 3, 10, 9, 1, 8, 0, 10, 6, 4, 5]
+    frames = []
+    frame = []
+    shots.convert_to_shots.each do |s|
+      frame << s
+
+      if frames.size < 10
+        if frame.size >= 2 || s == 10
+          frames << frame.dup
+          frame.clear
+        end
+      else # last frame
+        frames.last << s
+      end
+    end
+    frames
   end
 end
-frame = Frame.new(“1”, “9”)
-frame.score
+ 
