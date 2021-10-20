@@ -7,12 +7,10 @@ class Game < Frame
     subtotal = 0
     frames[0..8].each.with_index(1) do |frame, index|
       subtotal +=
-        if frame[0] == 10
-          if frames[index][1]
-            10 + frames[index][0] + frames[index][1]
-          else
-            10 + frames[index][0] + frames[index + 1][0]
-          end
+        if frame[0] == 10 && frames[index][1]
+          10 + frames[index][0] + frames[index][1]
+        elsif frame[0] == 10 && frames[index][1].nil?
+          10 + frames[index][0] + frames[index + 1][0]
         elsif frame.sum == 10
           10 + frames[index][0]
         else
