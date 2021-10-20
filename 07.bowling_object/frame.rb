@@ -1,4 +1,6 @@
-require_relative './shot.rb'
+# frozen_string_literal: true
+
+require_relative './shot'
 
 class Frame < Shot
   def shots_into_frame
