@@ -30,5 +30,6 @@ class Game < Frame
   end
 end
 
-score = Game.new
+input_shots = ARGV[0]
+score = Game.new(input_shots)
 puts score.total_score

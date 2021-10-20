@@ -8,7 +8,6 @@ class Frame < Shot
     frame = []
     shots.each do |s|
       frame << s
-
       if frames.size < 10
         if frame.size >= 2 || s == 10
           frames << frame.dup
