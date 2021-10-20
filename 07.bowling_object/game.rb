@@ -3,6 +3,11 @@
 require_relative './frame'
 
 class Game < Frame
+  def initialize(input_shots)
+    super
+    puts self.total_score
+  end
+
   def calc_score_excepting_last_frame
     subtotal = 0
     frames[0..8].each.with_index(1) do |frame, index|
@@ -31,5 +36,4 @@ class Game < Frame
 end
 
 input_shots = ARGV[0]
-score = Game.new(input_shots)
-puts score.total_score
+Game.new(input_shots)
