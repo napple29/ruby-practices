@@ -1,12 +1,12 @@
 require_relative './shot.rb'
 
-class Frame
+class Frame < Shot
   def shots_into_frame
-    shots = Shot.new
+    # shots = Shot.new
     # shots.convert_to_shots #[6, 3, 9, 0, 0, 3, 8, 2, 7, 3, 10, 9, 1, 8, 0, 10, 6, 4, 5]
     frames = []
     frame = []
-    shots.convert_to_shots.each do |s|
+    convert_to_shots.each do |s|
       frame << s
 
       if frames.size < 10
@@ -21,4 +21,3 @@ class Frame
     frames
   end
 end
- 
