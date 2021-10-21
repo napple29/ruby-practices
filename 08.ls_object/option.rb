@@ -1,9 +1,10 @@
 # frozen_string_literal: true
 
-module Options
+require 'fileutils'
+require 'etc'
 
+module Options
   def output_file_total(file)
-    total = []
     total = file.map { |one_file| File.stat(one_file).blocks }
     puts "total #{total.sum}"
   end
@@ -54,10 +55,10 @@ module Options
   def output_nomal_option(file)
     line = 3
     slice_number = if (file.size % line).zero?
-                    file.size / line
-                  else
-                    file.size / line + 1
-                  end
+                     file.size / line
+                   else
+                     file.size / line + 1
+                   end
     sliced_file = file.each_slice(slice_number).to_a
     (sliced_file.first.length - sliced_file.last.length).times { sliced_file.last.push('') } unless sliced_file.last.length == sliced_file.first.length
     transposed_sliced_file = sliced_file.transpose

@@ -3,7 +3,7 @@
 require 'optparse'
 require 'fileutils'
 require 'etc'
-require_relative './option.rb'
+require_relative './option'
 
 class LsCommand
   include Options
@@ -15,9 +15,7 @@ class LsCommand
 
   def main(options)
     files = options['a'] ? Dir.glob('*', File::FNM_DOTMATCH) : Dir.glob('*')
-
-
-    files = files.reverse if options['r'] 
+    files = files.reverse if options['r']
 
     if options['l']
       output_file_total(files)
@@ -28,7 +26,6 @@ class LsCommand
       output_nomal_option(files)
     end
   end
-
 end
 
 options = ARGV.getopts('a', 'l', 'r')
