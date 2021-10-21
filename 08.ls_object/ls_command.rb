@@ -9,8 +9,7 @@ class LsCommand
   include Options
 
   def initialize(options)
-    @options = options
-    main(@options)
+    main(options)
   end
 
   def main(options)
