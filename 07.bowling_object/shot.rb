@@ -1,11 +1,15 @@
 # frozen_string_literal: true
 
 class Shot
-  def initialize(input_shots)
-    @input_shots = input_shots
-  end
+  attr_reader :mark
 
-  def shots
-    @input_shots.split(',').map { |shot| shot == 'X' ? 10 : shot.to_i }
+  def initialize(mark)
+    @mark = mark
   end
-end
+  def score
+    return 10 if mark == ʻXʼ
+    mark.to_i
+  end
+end 
+
+p Shot.new('9')
