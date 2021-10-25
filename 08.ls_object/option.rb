@@ -52,21 +52,25 @@ module Options
     } [permissions_num.to_sym]
   end
 
-  def output_nomal_option(file)
-    line = 3
-    slice_number = if (file.size % line).zero?
-                     file.size / line
+  def output_nomal_option(files)
+    column = 3
+    number = if (files.size % column).zero?
+                     files.size / column
                    else
-                     file.size / line + 1
+                     files.size / column + 1
                    end
-    sliced_file = file.each_slice(slice_number).to_a
-    (sliced_file.first.length - sliced_file.last.length).times { sliced_file.last.push('') } unless sliced_file.last.length == sliced_file.first.length
-    transposed_sliced_file = sliced_file.transpose
-    num_for_spaces = file.max_by(&:size).size + 10
-    transposed_sliced_file.each do |ary|
-      ary.each_with_index do |element, idx|
-        print element + ' ' * (num_for_spaces - element.size)
-        print "\n" if ((idx + 1) % line).zero?
+
+     divide_file = files.each_slice(number).to_a
+
+    unless divide_file.last.size == divide_file.first.size
+      (divide_file.first.size - divide_file.last.size).times { divide_file.last.push('') }
+    end
+    between_files = files.max_by(&:size).size + 10
+
+    divide_file.transpose.each do |files|
+      files.each_with_index do |file, idx|
+        print file + ' ' * (between_files - file.size)
+        print "\n" if ((idx + 1) % column).zero?
       end
     end
   end
