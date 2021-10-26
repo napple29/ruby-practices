@@ -6,10 +6,9 @@ class Shot
   def initialize(mark)
     @mark = mark
   end
-  def score
-    return 10 if mark == ʻXʼ
+
+  def point
+    return 10 if mark == 'X'
     mark.to_i
   end
 end 
-
-p Shot.new('9')

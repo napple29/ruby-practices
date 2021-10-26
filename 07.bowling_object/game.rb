@@ -2,38 +2,25 @@
 
 require_relative './frame'
 
-class Game < Frame
-  def initialize(input_shots)
-    super
-    puts self.total_score
-  end
+class Game
 
-  def calc_score_excepting_last_frame
-    subtotal = 0
-    frames[0..8].each.with_index(1) do |frame, index|
-      subtotal +=
-        if frame[0] == 10 && frames[index][1]
-          10 + frames[index][0] + frames[index][1]
-        elsif frame[0] == 10 && frames[index][1].nil?
-          10 + frames[index][0] + frames[index + 1][0]
-        elsif frame.sum == 10
-          10 + frames[index][0]
-        else
-          frame.sum
-        end
+  attr_reader :all_shots
+
+  def initialize(all_shots)
+    @all_shots = all_shots
+    frames = Frame.frames(all_shots)
+    @frames = frames.map.with_index do |x, index|
+      Frame.new(*x, index)
     end
-
-    subtotal
-  end
-
-  def calc_last_frame
-    frames[9].sum
   end
 
   def total_score
-    calc_score_excepting_last_frame + calc_last_frame
+    @frames.map.with_index do |y, index|
+      y.calc_score(all_shots, Frame.next_frame, Frame.after_next_frame)
+    end.sum
   end
 end
 
-input_shots = ARGV[0]
-Game.new(input_shots)
+all_shots = ARGV[0]
+game = Game.new(all_shots)
+puts game.total_score
