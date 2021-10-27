@@ -3,14 +3,13 @@
 require_relative './frame'
 
 class Game
-
   attr_reader :all_shots, :frames
 
   def initialize(all_shots)
     @all_shots = all_shots
     frames = Frame.devide_frames(all_shots)
     @frames = frames.map.with_index do |frame, index|
-      Frame.new(*frame, index)
+      Frame.new(index, *frame)
     end
   end
 
