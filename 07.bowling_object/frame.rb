@@ -59,15 +59,31 @@ class Frame
     [@first_shot, @second_shot, @third_shot].sum
   end
 
+  def smaller_second_to_last
+    @index < 8
+  end
+
   def strike_bonus(next_frame, after_next_frame)
-    if next_frame.instance_variable_get("@second_shot") == 0 && @index < 8
-      next_frame.instance_variable_get("@first_shot") + after_next_frame.instance_variable_get("@first_shot")
+    if next_frame_second_shot(next_frame) == 0 && smaller_second_to_last
+      next_frame_first_shot(next_frame) + after_next_frame_first_shot(after_next_frame)
     else
-      next_frame.instance_variable_get("@first_shot") + next_frame.instance_variable_get("@second_shot")
+      next_frame_first_shot(next_frame) + next_frame_second_shot(next_frame)
     end
   end
 
   def spare_bonus(next_frame)
+    next_frame_first_shot(next_frame)
+  end
+
+  def next_frame_first_shot(next_frame)
     next_frame.instance_variable_get("@first_shot")
+  end
+
+  def next_frame_second_shot(next_frame)
+    next_frame.instance_variable_get("@second_shot")
+  end
+
+  def after_next_frame_first_shot(after_next_frame)
+    after_next_frame.instance_variable_get("@first_shot")
   end
 end

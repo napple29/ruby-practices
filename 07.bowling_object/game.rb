@@ -16,7 +16,7 @@ class Game
 
   def total_score
     @frames.map.with_index do |frame, index|
-      frame.calc_score(@frames[index.succ], @frames[index + 2])
+      frame.calc_score(@frames[index.succ], @frames[index.succ.succ])
     end.sum
   end
 end
