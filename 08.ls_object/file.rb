@@ -1,12 +1,10 @@
 class File
-  def initialize
-    @files = file
-    p @files #["detail.rb", "file.rb", "ls_command.rb", "option.rb"]
+  def initialize(options)
+    @files = file(options)
   end
 
-  def file
-    files = Dir.glob('*')
+  def file(options)
+    files = options['a'] ? Dir.glob('*', File::FNM_DOTMATCH) : Dir.glob('*')
   end
 end
 
-# files = File.new
