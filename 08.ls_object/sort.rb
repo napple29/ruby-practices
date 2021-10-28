@@ -10,6 +10,3 @@ class Sort
     files = options['r'] ? @files.reverse : @files 
   end
 end
-
-options = ARGV.getopts('a', 'l', 'r')
-Sort.new(options)

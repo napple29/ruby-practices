@@ -3,34 +3,14 @@
 require 'optparse'
 require 'fileutils'
 require 'etc'
-# require_relative './option'
+
 require_relative './file'
+require_relative './detail'
 
 class LsCommand
 
   def initialize(options)
-    # @options = options
-    @files = File.new(options)
-    # @options = options #[["a", true], ["l", true], ["r", false]]
-    # *a_option = options.find_all{|n| n.include?("a")} #["a", true]
-    # p *a_option
-    # @file = File.new
-    # @sort = Sort.new
-    # @column = Column.new
-  end
-
-  def main(options)
-    files = options['a'] ? Dir.glob('*', File::FNM_DOTMATCH) : Dir.glob('*')
-    files = files.reverse if options['r']
-
-    if options['l']
-      output_file_total(files)
-      files.each do |file|
-        output_long_option(file)
-      end
-    else
-      output_nomal_option(files)
-    end
+    @files = Detail.new(options)
   end
 end
 
