@@ -1,4 +1,6 @@
 class File
+  attr_reader :files
+
   def initialize(options)
     @files = file(options)
   end
