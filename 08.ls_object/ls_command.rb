@@ -4,12 +4,24 @@ require 'optparse'
 require 'fileutils'
 require 'etc'
 require_relative './option'
+require_relative './file'
 
 class LsCommand
   include Options
 
-  def initialize(options)
-    main(options)
+  def initialize
+    # @options = options
+    @file = File.new
+    p @file
+    # @options = options #[["a", true], ["l", true], ["r", false]]
+    # *a_option = options.find_all{|n| n.include?("a")} #["a", true]
+    # p *a_option
+    # @file = File.new
+    # @sort = Sort.new
+    # @column = Column.new
+  end
+
+  def foo
   end
 
   def main(options)
@@ -27,5 +39,5 @@ class LsCommand
   end
 end
 
-options = ARGV.getopts('a', 'l', 'r')
-LsCommand.new(options)
+# options = ARGV.getopts('a', 'l', 'r')
+LsCommand.new
