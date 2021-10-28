@@ -4,7 +4,7 @@ require_relative './sort'
 
 class Detail
   def initialize(options)
-    @files = Sort.new(options).instance_variable_get(:@files)
+    @files = Sort.new(options).instance_variable_get(:@sort_files)
     output_file_detail_or_file_name(options)
   end
 

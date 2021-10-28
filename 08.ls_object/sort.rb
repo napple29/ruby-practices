@@ -7,6 +7,6 @@ class Sort
     @sort_files = sort_files(options)
   end
   def sort_files(options)
-    files = options['r'] ? @files.reverse : @files 
+    options['r'] ? @files.reverse : @files 
   end
 end
