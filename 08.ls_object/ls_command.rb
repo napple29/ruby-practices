@@ -15,7 +15,8 @@ class LsCommand
   end
 
   def main(options)
-    files = options['r'] ? Sort.new(@files) : @files
+    
+    files = options['r'] ? Sort.new(@files).sort_files(@files) : @files
 
     if options['l']
       Detail.output_long_option(files)
