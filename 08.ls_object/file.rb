@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class File
   def initialize(options)
     @files = files(options)
@@ -7,4 +9,3 @@ class File
     options['a'] ? Dir.glob('*', File::FNM_DOTMATCH) : Dir.glob('*')
   end
 end
-

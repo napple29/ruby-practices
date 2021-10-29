@@ -15,15 +15,14 @@ class LsCommand
   end
 
   def main(options)
+    files = options['r'] ? Sort.new(@files) : @files
 
-  files = options['r']? Sort.new(@files) : @files
-
-  if options['l']
-    Detail.output_long_option(files)
-  else
-    Detail.output_nomal_option(files)
+    if options['l']
+      Detail.output_long_option(files)
+    else
+      Detail.output_nomal_option(files)
+    end
   end
-end
 end
 
 options = ARGV.getopts('a', 'l', 'r')
