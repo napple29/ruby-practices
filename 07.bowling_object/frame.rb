@@ -6,9 +6,9 @@ class Frame
   attr_reader :first_shot, :second_shot, :third_shot, :index
 
   def initialize(index, first_mark, second_mark = nil, third_mark = nil)
-    @first_shot = Shot.new(first_mark).score
-    @second_shot = Shot.new(second_mark).score
-    @third_shot = Shot.new(third_mark).score
+    @first_shot = Shot.new(first_mark)
+    @second_shot = Shot.new(second_mark)
+    @third_shot = Shot.new(third_mark)
     @index = index
   end
 
@@ -47,38 +47,26 @@ class Frame
   end
 
   def strike?
-    @first_shot == 10
+    @first_shot.score == 10
   end
 
   def spare?
-    [@first_shot, @second_shot].sum == 10
+    [@first_shot.score, @second_shot.score].sum == 10
   end
 
   def basic_score
-    [@first_shot, @second_shot, @third_shot].sum
+    [@first_shot.score, @second_shot.score, @third_shot.score].sum
   end
 
   def strike_bonus(next_frame, after_next_frame)
-    if next_frame_second_shot(next_frame) == strike?
-      next_frame_first_shot(next_frame) + after_next_frame_first_shot(after_next_frame)
+    if next_frame.second_shot == strike?
+      next_frame.first_shot.score + after_next_frame.first_shot.score
     else
-      next_frame_first_shot(next_frame) + next_frame_second_shot(next_frame)
+      next_frame.first_shot.score + next_frame.second_shot.score
     end
   end
 
   def spare_bonus(next_frame)
-    next_frame_first_shot(next_frame)
-  end
-
-  def next_frame_first_shot(next_frame)
-    next_frame.instance_variable_get('@first_shot')
-  end
-
-  def next_frame_second_shot(next_frame)
-    next_frame.instance_variable_get('@second_shot')
-  end
-
-  def after_next_frame_first_shot(after_next_frame)
-    after_next_frame.instance_variable_get('@first_shot')
+    next_frame.first_shot.score
   end
 end

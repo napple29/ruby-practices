@@ -3,7 +3,6 @@
 require_relative './frame'
 
 class Game
-
   def initialize(all_marks)
     @all_marks = all_marks
     divide_frames = Frame.divide_frames(all_marks)
