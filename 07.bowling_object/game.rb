@@ -3,7 +3,6 @@
 require_relative './frame'
 
 class Game
-  attr_reader :all_shots, :frames
 
   def initialize(all_shots)
     @all_shots = all_shots
@@ -15,7 +14,7 @@ class Game
 
   def total_score
     @frames.map.with_index do |frame, index|
-      frame.calc_score(@frames[index.succ], @frames[index.succ.succ])
+      frame.calc_score(@frames[index.next], @frames[index.next.next])
     end.sum
   end
 end
