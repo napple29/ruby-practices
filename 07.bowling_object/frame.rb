@@ -24,10 +24,10 @@ class Frame
     end
   end
 
-  def self.divide_frames(all_shots)
+  def self.divide_frames(all_marks)
     frames = []
     frame = []
-    all_shots.split(',').each do |mark|
+    all_marks.each do |mark|
       score = Shot.new(mark).point
       frame << score
       if frames.size < 10

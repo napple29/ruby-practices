@@ -4,9 +4,9 @@ require_relative './frame'
 
 class Game
 
-  def initialize(all_shots)
-    @all_shots = all_shots
-    frames = Frame.divide_frames(all_shots)
+  def initialize(all_marks)
+    @all_marks = all_marks
+    frames = Frame.divide_frames(all_marks)
     @frames = frames.map.with_index do |frame, index|
       Frame.new(index, *frame)
     end
@@ -19,6 +19,6 @@ class Game
   end
 end
 
-all_shots = ARGV[0]
-game = Game.new(all_shots)
+all_marks = ARGV[0].split(',')
+game = Game.new(all_marks)
 puts game.total_score
