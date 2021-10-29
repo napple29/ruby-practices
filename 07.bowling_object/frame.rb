@@ -6,21 +6,21 @@ class Frame
   attr_reader :first_shot, :second_shot, :third_shot, :index
 
   def initialize(index, first_mark, second_mark = nil, third_mark = nil)
-    @first_shot = Shot.new(first_mark).point
-    @second_shot = Shot.new(second_mark).point
-    @third_shot = Shot.new(third_mark).point
+    @first_shot = Shot.new(first_mark).score
+    @second_shot = Shot.new(second_mark).score
+    @third_shot = Shot.new(third_mark).score
     @index = index
   end
 
   def calc_score(next_frame, after_next_frame)
     if last_frame?
-      basic_point
+      basic_score
     elsif strike?
-      basic_point + strike_bonus(next_frame, after_next_frame)
+      basic_score + strike_bonus(next_frame, after_next_frame)
     elsif spare?
-      basic_point + spare_bonus(next_frame)
+      basic_score + spare_bonus(next_frame)
     else
-      basic_point
+      basic_score
     end
   end
 
@@ -28,7 +28,7 @@ class Frame
     frames = []
     frame = []
     all_marks.each do |mark|
-      score = Shot.new(mark).point
+      score = Shot.new(mark).score
       frame << score
       if frames.size < 10
         if frame.size >= 2 || score == 10
@@ -54,7 +54,7 @@ class Frame
     [@first_shot, @second_shot].sum == 10
   end
 
-  def basic_point
+  def basic_score
     [@first_shot, @second_shot, @third_shot].sum
   end
 
