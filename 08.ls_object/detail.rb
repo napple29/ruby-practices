@@ -7,7 +7,7 @@ class Detail
   def self.output_long_option(files)
     output_file_total(files)
     files.each do |file|
-      output_long_option(file)
+      long_option(file)
     end
   end
 
@@ -35,12 +35,12 @@ class Detail
     end
   end
 
-  def output_file_total(file)
-    total = file.map { |one_file| File.stat(one_file).blocks }
+  def self.output_file_total(files)
+    total = files.map { |one_file| File.stat(one_file).blocks }
     puts "total #{total.sum}"
   end
 
-  def output_long_option(file)
+  def self.long_option(file)
     fs = File::Stat.new(file)
     mode_num = fs.mode.to_s(8).rjust(6, '0')
     filetype_num = mode_num[0..1]
@@ -58,7 +58,7 @@ class Detail
     puts "#{filetype}#{owner_permission}#{group_permission}#{other_permission}\t#{hardlink}\t#{user}\t#{group}\t#{size}\t#{time}\t#{base}\t"
   end
 
-  def convert_to_filetype(filetype_num)
+  def self.convert_to_filetype(filetype_num)
     {
       '01': 'p',
       '02': 'c',
@@ -70,7 +70,7 @@ class Detail
     } [filetype_num.to_sym]
   end
 
-  def convert_to_permissions(permissions_num)
+  def self.convert_to_permissions(permissions_num)
     {
       '0': '---',
       '1': '--x',
