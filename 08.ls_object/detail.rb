@@ -1,31 +1,21 @@
 require 'fileutils'
 require 'etc'
-require_relative './sort'
 
 class Detail
-  def initialize(options)
-    @files = Sort.new(options).instance_variable_get(:@sort_files)
-    output_file_detail_or_file_name(options)
-  end
-
-  def output_file_detail_or_file_name(options)
-    if options['l']
-      output_file_total(@files)
-      @files.each do |file|
-        output_long_option(file)
-      end
-    else
-      output_nomal_option(@files)
+  def self.output_long_option(files)
+    output_file_total(files)
+    files.each do |file|
+      output_long_option(file)
     end
   end
 
-  def output_nomal_option(files)
+  def self.output_nomal_option(files)
     column = 3
     number = if (files.size % column).zero?
-                     files.size / column
-                   else
-                     files.size / column + 1
-                   end
+                files.size / column
+              else
+                files.size / column + 1
+              end
 
      divide_file = files.each_slice(number).to_a
 

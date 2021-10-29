@@ -2,11 +2,11 @@ require 'optparse'
 require_relative './file'
 
 class Sort
-  def initialize(options)
-    @files = File.new(options).instance_variable_get(:@files)
-    @sort_files = sort_files(options)
+  def initialize(files)
+    @sort_files = sort_files(files)
   end
-  def sort_files(options)
-    options['r'] ? @files.reverse : @files 
+
+  def sort_files(files)
+    files.reverse
   end
 end
