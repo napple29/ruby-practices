@@ -7,7 +7,7 @@ class Game
 
   def initialize(all_shots)
     @all_shots = all_shots
-    frames = Frame.devide_frames(all_shots)
+    frames = Frame.divide_frames(all_shots)
     @frames = frames.map.with_index do |frame, index|
       Frame.new(index, *frame)
     end

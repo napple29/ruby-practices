@@ -24,7 +24,7 @@ class Frame
     end
   end
 
-  def self.devide_frames(all_shots)
+  def self.divide_frames(all_shots)
     frames = []
     frame = []
     all_shots.split(',').each do |mark|
