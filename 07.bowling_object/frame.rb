@@ -58,12 +58,8 @@ class Frame
     [@first_shot, @second_shot, @third_shot].sum
   end
 
-  # def smaller_second_to_last
-  #   @index < 8
-  # end
-
   def strike_bonus(next_frame, after_next_frame)
-    if next_frame_second_shot(next_frame).zero? && !last_frame?
+    if next_frame_second_shot(next_frame) == strike?
       next_frame_first_shot(next_frame) + after_next_frame_first_shot(after_next_frame)
     else
       next_frame_first_shot(next_frame) + next_frame_second_shot(next_frame)
