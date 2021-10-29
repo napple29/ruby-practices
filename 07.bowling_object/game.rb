@@ -6,8 +6,8 @@ class Game
 
   def initialize(all_marks)
     @all_marks = all_marks
-    frames = Frame.divide_frames(all_marks)
-    @frames = frames.map.with_index do |frame, index|
+    divide_frames = Frame.divide_frames(all_marks)
+    @frames = divide_frames.map.with_index do |frame, index|
       Frame.new(index, *frame)
     end
   end
