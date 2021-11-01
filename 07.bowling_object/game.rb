@@ -5,15 +5,17 @@ require_relative './frame'
 class Game
   def initialize(all_marks)
     @all_marks = all_marks
-    divide_frames = Frame.divide_frames(all_marks)
-    @frames = divide_frames.map.with_index do |frame, index|
-      Frame.new(index, *frame)
-    end
+    @frames = Frame.divide_frames(all_marks)
+    # @frames = divide_frames.map.with_index do |frame, index|
+    #   Frame.new(index, *frame)
+    # end
   end
 
   def total_score
     @frames.map.with_index do |frame, index|
-      frame.calc_score(@frames[index.next], @frames[index.next.next])
+      next_frame = Frame.new(index.next, *@frames[index.next]) if index < 9
+      after_next_frame = Frame.new(index.next.next, *@frames[index.next.next]) if index < 8
+      Frame.new(index, *frame).calc_score(next_frame, after_next_frame)
     end.sum
   end
 end
