@@ -4,19 +4,16 @@ require 'optparse'
 require 'fileutils'
 require 'etc'
 
-require_relative './file'
-require_relative './sort'
 require_relative './detail'
 
 class LsCommand
   def initialize(options)
-    files = File.new(options)
-    @files = files.files(options)
+    options
   end
 
   def main(options)
-    
-    files = options['r'] ? Sort.new(@files).sort_files(@files) : @files
+    files = options['a'] ? Detail.all_files : Detail.not_begin_with_a_dot_files
+    files = options['r'] ? Detail.reverse_files(files) : files
 
     if options['l']
       Detail.output_long_option(files)

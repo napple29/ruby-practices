@@ -4,11 +4,16 @@ require 'fileutils'
 require 'etc'
 
 class Detail
-  def self.output_long_option(files)
-    output_file_total(files)
-    files.each do |file|
-      long_option(file)
-    end
+  def self.all_files
+    Dir.glob('*', File::FNM_DOTMATCH)
+  end
+
+  def self.not_begin_with_a_dot_files
+    Dir.glob('*')
+  end
+
+  def self.reverse_files(files)
+    files.reverse
   end
 
   def self.output_nomal_option(files)
@@ -39,6 +44,15 @@ class Detail
       end
     end
   end
+
+  def self.output_long_option(files)
+    output_file_total(files)
+    files.each do |file|
+      long_option(file)
+    end
+  end
+
+  protected
 
   def self.output_file_total(files)
     total = files.map { |one_file| File.stat(one_file).blocks }
