@@ -3,7 +3,7 @@
 require 'fileutils'
 require 'etc'
 
-class Detail
+class Format
   def self.all_files
     Dir.glob('*', File::FNM_DOTMATCH)
   end
@@ -33,14 +33,14 @@ class Detail
     between_files = files.max_by(&:size).size + 10
 
     divide_by_columns.transpose.each do |divide_by_column|
-        divide_by_column.each_with_index do |file, idx|
+      divide_by_column.each_with_index do |file, idx|
+        print file + ' ' * (between_files - file.size)
         if divide_by_columns.flatten.size  == 4
-          print file + ' ' * (between_files - file.size)
           print "\n" if ((idx + 1) % 2).zero?
         else
-          print file + ' ' * (between_files - file.size)
           print "\n" if ((idx + 1) % column).zero?
         end
+        print "\n" if idx == divide_by_columns.size - 1
       end
     end
   end
