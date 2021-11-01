@@ -19,18 +19,23 @@ class Detail
                files.size / column + 1
              end
 
-    divide_by_colmuns = files.each_slice(line).to_a
+    divide_by_columns = files.each_slice(line).to_a
 
-    unless divide_by_colmuns.last.size == divide_by_colmuns.first.size
-      (divide_by_colmuns.first.size - divide_by_colmuns.last.size).times { divide_by_colmuns.last.push('') }
+    unless divide_by_columns.last.size == divide_by_columns.first.size
+      (divide_by_columns.first.size - divide_by_columns.last.size).times { divide_by_columns.last.push('') }
     end
 
     between_files = files.max_by(&:size).size + 10
 
-    divide_by_colmuns.transpose.each do |divide_by_colmun|
-      divide_by_colmun.each_with_index do |file, idx|
-        print file + ' ' * (between_files - file.size)
-        print "\n" if ((idx + 1) % column).zero?
+    divide_by_columns.transpose.each do |divide_by_column|
+        divide_by_column.each_with_index do |file, idx|
+        if divide_by_columns.flatten.size  == 4
+          print file + ' ' * (between_files - file.size)
+          print "\n" if ((idx + 1) % 2).zero?
+        else
+          print file + ' ' * (between_files - file.size)
+          print "\n" if ((idx + 1) % column).zero?
+        end
       end
     end
   end
