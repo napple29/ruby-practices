@@ -40,7 +40,7 @@ class Format
         else
           print "\n" if ((idx + 1) % column).zero?
         end
-        print "\n" if idx == divide_by_columns.size - 1
+        print "\n" if idx == divide_by_columns.flatten.size - 1
       end
     end
   end
