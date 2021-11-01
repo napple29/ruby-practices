@@ -8,7 +8,8 @@ class Shot
   end
 
   def score
-    return 0 if mark == nil
+    return 0 if mark.nil?
+
     mark.mark == 'X' ? 10 : mark.mark.to_i
   end
 end

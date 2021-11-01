@@ -27,7 +27,7 @@ class Frame
   def self.divide_frames(all_marks)
     frames = []
     shots = []
-    all_marks.each_with_index do |mark|
+    all_marks.each do |mark|
       shot = Shot.new(mark)
       shots << shot
       if frames.size < 10
@@ -47,7 +47,6 @@ class Frame
   end
 
   def strike?
-    # binding.irb
     @first_shot.score == 10
   end
 
@@ -56,7 +55,6 @@ class Frame
   end
 
   def basic_score
-    # binding.irb
     [@first_shot.score, @second_shot.score, @third_shot.score].sum
   end
 
