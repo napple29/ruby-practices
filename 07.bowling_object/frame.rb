@@ -27,7 +27,7 @@ class Frame
   def self.divide_frames(all_marks)
     frames = []
     shots = []
-    index = -1 #インデックスを0から開始したいため
+    index = -1 # インデックスを0から開始したいため
     all_marks.each do |mark|
       shot = Shot.new(mark)
       shots << shot
@@ -37,12 +37,10 @@ class Frame
           frames << Frame.new(index, *shots)
           shots.clear
         end
-      else # last frame
-        if frames.last.second_shot.mark.nil?
-          frames.last.second_shot.mark = shot
-        else
-          frames.last.third_shot.mark = shot
-        end
+      elsif frames.last.second_shot.mark.nil? # last frame
+        frames.last.second_shot.mark = shot
+      else
+        frames.last.third_shot.mark = shot
       end
     end
     frames
