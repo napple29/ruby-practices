@@ -15,7 +15,7 @@ class LsCommand
     @r_option = options['r']
   end
 
-  def main(**options)
+  def main
     files = a_option ? Format.all_files : Format.not_begin_with_a_dot_files
     files = r_option ? Format.reverse_files(files) : files
 
