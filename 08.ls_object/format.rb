@@ -4,25 +4,26 @@ require 'fileutils'
 require 'etc'
 
 class Format
-  def self.all_files
+  class << self
+  def all_files
     Dir.glob('*', File::FNM_DOTMATCH)
   end
 
-  def self.not_begin_with_a_dot_files
+  def not_begin_with_a_dot_files
     Dir.glob('*')
   end
 
-  def self.reverse_files(files)
+  def reverse_files(files)
     files.reverse
   end
 
-  def self.output_nomal_option(files)
+  def output_nomal_option(files)
     column = 3
     line = if (files.size % column).zero?
-               files.size / column
-             else
-               files.size / column + 1
-             end
+             files.size / column
+           else
+             files.size / column + 1
+           end
 
     divide_by_columns = files.each_slice(line).to_a
 
@@ -39,7 +40,7 @@ class Format
     end
   end
 
-  def self.output_long_option(files)
+  def output_long_option(files)
     output_file_total(files)
     files.each do |file|
       long_option(file)
@@ -48,12 +49,12 @@ class Format
 
   protected
 
-  def self.output_file_total(files)
+  def output_file_total(files)
     total = files.map { |one_file| File.stat(one_file).blocks }
     puts "total #{total.sum}"
   end
 
-  def self.long_option(file)
+  def  long_option(file)
     fs = File::Stat.new(file)
     mode_num = fs.mode.to_s(8).rjust(6, '0')
     filetype_num = mode_num[0..1]
@@ -71,7 +72,7 @@ class Format
     puts "#{filetype}#{owner_permission}#{group_permission}#{other_permission}\t#{hardlink}\t#{user}\t#{group}\t#{size}\t#{time}\t#{base}\t"
   end
 
-  def self.convert_to_filetype(filetype_num)
+  def  convert_to_filetype(filetype_num)
     {
       '01': 'p',
       '02': 'c',
@@ -83,7 +84,7 @@ class Format
     } [filetype_num.to_sym]
   end
 
-  def self.convert_to_permissions(permissions_num)
+  def  convert_to_permissions(permissions_num)
     {
       '0': '---',
       '1': '--x',
@@ -94,5 +95,6 @@ class Format
       '6': 'rw-',
       '7': 'rwx'
     } [permissions_num.to_sym]
+  end
   end
 end
