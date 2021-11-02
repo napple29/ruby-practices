@@ -3,7 +3,7 @@
 require_relative './shot'
 
 class Frame
-  attr_reader :first_shot, :second_shot, :third_shot, :index
+  attr_accessor :first_shot, :second_shot, :third_shot, :index
 
   def initialize(index, first_mark, second_mark = nil, third_mark = nil)
     @first_shot = Shot.new(first_mark)
@@ -27,16 +27,22 @@ class Frame
   def self.divide_frames(all_marks)
     frames = []
     shots = []
+    index = -1 #インデックスを0から開始したいため
     all_marks.each do |mark|
       shot = Shot.new(mark)
       shots << shot
       if frames.size < 10
         if shots.size >= 2 || mark == 'X'
-          frames << shots.dup
+          index += 1
+          frames << Frame.new(index, *shots)
           shots.clear
         end
       else # last frame
-        frames.last << shot
+        if frames.last.second_shot.mark.nil?
+          frames.last.second_shot.mark = shot
+        else
+          frames.last.third_shot.mark = shot
+        end
       end
     end
     frames

@@ -10,9 +10,9 @@ class Game
 
   def total_score
     @frames.map.with_index do |frame, index|
-      next_frame = Frame.new(index.next, *@frames[index.next]) if index < 9
-      after_next_frame = Frame.new(index.next.next, *@frames[index.next.next]) if index < 8
-      Frame.new(index, *frame).calc_score(next_frame, after_next_frame)
+      next_frame = @frames[index.next] if index < 9
+      after_next_frame = @frames[index.next.next] if index < 8
+      frame.calc_score(next_frame, after_next_frame)
     end.sum
   end
 end
