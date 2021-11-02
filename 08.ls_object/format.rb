@@ -30,16 +30,10 @@ class Format
       (divide_by_columns.first.size - divide_by_columns.last.size).times { divide_by_columns.last.push('') }
     end
 
-    between_files = files.max_by(&:size).size + 10
-
     divide_by_columns.transpose.each do |divide_by_column|
       divide_by_column.each_with_index do |file, idx|
-        print file + ' ' * (between_files - file.size)
-        if divide_by_columns.flatten.size  == 4
-          print "\n" if ((idx + 1) % 2).zero?
-        else
-          print "\n" if ((idx + 1) % column).zero?
-        end
+        print file.ljust(20)
+        print "\n" if ((idx + 1) % column).zero?
         print "\n" if idx == divide_by_columns.flatten.size - 1
       end
     end
