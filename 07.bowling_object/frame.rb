@@ -5,10 +5,10 @@ require_relative './shot'
 class Frame
   attr_accessor :first_shot, :second_shot, :third_shot, :index
 
-  def initialize(index, first_mark, second_mark = nil, third_mark = nil)
-    @first_shot = Shot.new(first_mark)
-    @second_shot = Shot.new(second_mark)
-    @third_shot = Shot.new(third_mark)
+  def initialize(index, first_shot, second_shot = nil, third_shot = nil)
+    @first_shot = first_shot
+    @second_shot = second_shot
+    @third_shot = third_shot
     @index = index
   end
 
@@ -27,22 +27,23 @@ class Frame
   def self.divide_frames(all_marks)
     frames = []
     shots = []
-    index = -1 # インデックスを0から開始したいため
+    last_frame = []
+    index = 0
+
     all_marks.each do |mark|
       shot = Shot.new(mark)
       shots << shot
-      if frames.size < 10
+      if frames.size < 9
         if shots.size >= 2 || mark == 'X'
-          index += 1
           frames << Frame.new(index, *shots)
+          index += 1
           shots.clear
         end
-      elsif frames.last.second_shot.mark.nil? # last frame
-        frames.last.second_shot.mark = shot
       else
-        frames.last.third_shot.mark = shot
+        last_frame << shot
       end
     end
+    frames << Frame.new(index, *last_frame)
     frames
   end
 
@@ -59,7 +60,7 @@ class Frame
   end
 
   def basic_score
-    [@first_shot.score, @second_shot.score, @third_shot.score].sum
+    [@first_shot.score, @second_shot&.score || 0, @third_shot&.score || 0].sum
   end
 
   def strike_bonus(next_frame, after_next_frame)
