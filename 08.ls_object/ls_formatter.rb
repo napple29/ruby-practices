@@ -16,27 +16,29 @@ class LsFormatter
     Dir.glob('*', File::FNM_DOTMATCH).map{|file| LsFile.new(file)}
   end
 
-  def all_files_name
-    all_files.map{|file| file.file}
-  end
-
-  def not_begin_with_a_dot_files_name
-    all_files_name.grep(/^[^.]/)
+  def not_begin_with_a_dot_files
+    Dir.glob('*').map{|file| LsFile.new(file)}
   end
 
   def reverse_files(files)
     files.reverse
   end
 
+  def files_name(files)
+    files.map{|file| file.file}
+  end
+
   def output_normal_option(files)
+    files_name_list = files_name(files)
+
     column = 3
-    line = if (files.size % column).zero?
-              files.size / column
+    line = if ( files_name_list.size % column).zero?
+               files_name_list.size / column
             else
-              files.size / column + 1
+               files_name_list.size / column + 1
             end
 
-    divide_by_columns = files.each_slice(line).to_a
+    divide_by_columns =  files_name_list.each_slice(line).to_a
 
     unless divide_by_columns.last.size == divide_by_columns.first.size
       (divide_by_columns.first.size - divide_by_columns.last.size).times { divide_by_columns.last.push('') }
@@ -59,7 +61,7 @@ class LsFormatter
   end
 
   def output_file_total(files)
-    total = files.map { |one_file| File.stat(one_file).blocks }
+    total = files.map { |file| file.file_block }.sum
     puts "total #{total.sum}"
   end
 end
