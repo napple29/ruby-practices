@@ -21,9 +21,9 @@ class LsCommand
     files = r_option ? current_directory_files.reverse_files(files) : files
 
     if l_option
-      current_directory_files.output_long_option(files)
+      current_directory_files.output_list_in_long_format(files)
     else
-      current_directory_files.output_normal_option(files)
+      current_directory_files.output_default_option(files)
     end
   end
 end
