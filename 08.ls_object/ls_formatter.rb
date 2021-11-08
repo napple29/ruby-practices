@@ -25,10 +25,10 @@ class LsFormatter
   end
 
   def files_name(files)
-    files.map{|file| file.file}
+    files.map{|file| file.name}
   end
 
-  def output_default_option(files)
+  def output_default_format(files)
     files_name_list = files_name(files)
 
     column = 3
@@ -54,23 +54,23 @@ class LsFormatter
   end
 
   def output_list_in_long_format(files)
-    output_file_total(files)
+    file_total(files)
     list_in_long_format(files)
   end
 
-  def output_file_total(files)
+  def file_total(files)
     total = files.map {|file| file.file_block}.sum
     puts "total #{total}"
   end
 
   def list_in_long_format(files)
     files.each do |file|
-      print file.permission.ljust(9)
-      print file.hardlink.to_s.rjust(3, ' ')
-      print file.file_user.rjust(13)
-      print file.file_group.rjust(6)
-      print file.file_size.to_s.rjust(5, ' ')
-      print file.file_time.rjust(13)
+      print file.file_mode.ljust(9)
+      print file.number_of_links.to_s.rjust(3, ' ')
+      print file.owner_name.rjust(13)
+      print file.group_name.rjust(6)
+      print file.number_of_bytes_in_the_file.to_s.rjust(5, ' ')
+      print file.last_modified_time.rjust(13)
       print ' ' + file.name
       print "\n"
     end

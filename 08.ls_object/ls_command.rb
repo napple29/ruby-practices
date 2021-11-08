@@ -23,7 +23,7 @@ class LsCommand
     if l_option
       current_directory_files.output_list_in_long_format(files)
     else
-      current_directory_files.output_default_option(files)
+      current_directory_files.output_default_format(files)
     end
   end
 end
