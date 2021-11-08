@@ -22,7 +22,7 @@ class LsFile
   end
 
   def file_mode
-    fs = File.Stat.new(file)
+    fs = File::Stat.new(file)
     mode_num = fs.mode.to_s(8).rjust(6, '0')
     filetype_num = mode_num[0..1]
     permissions_num = mode_num[3..5]
@@ -34,17 +34,17 @@ class LsFile
   end
 
   def number_of_links
-    fs = File.Stat.new(file)
+    fs = File::Stat.new(file)
     fs.nlink
   end
 
   def owner_name
-    fs = File.Stat.new(file)
+    fs = File::Stat.new(file)
     Etc.getpwuid(fs.uid).name
   end
 
   def group_name
-    fs = File.Stat.new(file)
+    fs = File::Stat.new(file)
     Etc.getgrgid(fs.gid).name
   end
 
