@@ -17,7 +17,7 @@ class LsFormatter
   end
 
   def not_begin_with_a_dot_files
-    Dir.glob('*').map{|file| LsFile.new(file)}
+    all_files.delete_if{|file| file.name.match(/^[.]/)}
   end
 
   def reverse_files(files)
