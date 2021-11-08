@@ -3,13 +3,13 @@ require 'etc'
 
 class LsFile
 
-  attr_reader :file, :name, :permission, :hard_link, :file_user, :file_group, :file_size, :file_time, :file_block
+  attr_reader :file, :name, :permission, :hardlink, :file_user, :file_group, :file_size, :file_time, :file_block
 
   def initialize(file)
     @file = file
     @name = name
     @permission = permission
-    @hard_link = hard_link
+    @hardlink = hardlink
     @file_user = file_user
     @file_group = file_group
     @file_size = file_size
