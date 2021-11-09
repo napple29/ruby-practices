@@ -19,6 +19,10 @@ class LsFile
     @file_block = file_block
   end
 
+  def self.ls_files
+    Dir.glob('*', File::FNM_DOTMATCH).map{|file| LsFile.new(file)}
+  end
+
   def name
     File.basename(file)
   end

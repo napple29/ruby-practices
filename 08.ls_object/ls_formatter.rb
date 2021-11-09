@@ -8,18 +8,14 @@ require_relative './ls_file'
 class LsFormatter
   COLUMN = 3
 
-  attr_reader :all_files
+  attr_reader :ls_files
 
-  def initialize
-    @all_files = all_files
-  end
-
-  def all_files
-    Dir.glob('*', File::FNM_DOTMATCH).map{|file| LsFile.new(file)}
+  def initialize(ls_files)
+    @ls_files = ls_files
   end
 
   def not_begin_with_a_dot_files
-    all_files.delete_if{|file| file.name.match(/^[.]/)}
+    ls_files.delete_if{|file| file.name.match(/^[.]/)}
   end
 
   def reverse_files(files)
