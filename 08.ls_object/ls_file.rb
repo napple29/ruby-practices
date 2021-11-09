@@ -2,6 +2,8 @@ require 'fileutils'
 require 'etc'
 
 class LsFile
+  FILETYPE = {'01': 'p', '02': 'c', '04': 'd', '06': 'b', '10': '-', '12': 'l', '14': 's'}
+  PERMISSIONS = {'0': '---', '1': '--x', '2': '-w-', '3': '-wx', '4': 'r--', '5': 'r-x', '6': 'rw-', '7': 'rwx'}
 
   attr_reader :file, :name, :file_mode, :number_of_links, :owner_name, :group_name, :number_of_bytes_in_the_file, :last_modified_time, :file_block
 
@@ -61,27 +63,10 @@ class LsFile
   end
 
   def convert_to_filetype(filetype_num)
-      {
-        '01': 'p',
-        '02': 'c',
-        '04': 'd',
-        '06': 'b',
-        '10': '-',
-        '12': 'l',
-        '14': 's'
-      }[filetype_num.to_sym]
-    end
+    FILETYPE[filetype_num.to_sym]
+  end
 
-    def convert_to_permissions(permissions_num)
-      {
-        '0': '---',
-        '1': '--x',
-        '2': '-w-',
-        '3': '-wx',
-        '4': 'r--',
-        '5': 'r-x',
-        '6': 'rw-',
-        '7': 'rwx'
-      }[permissions_num.to_sym]
-    end
+  def convert_to_permissions(permissions_num)
+    PERMISSIONS[permissions_num.to_sym]
+  end
 end

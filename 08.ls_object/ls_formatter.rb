@@ -6,6 +6,8 @@ require 'etc'
 require_relative './ls_file'
 
 class LsFormatter
+  COLUMN = 3
+
   attr_reader :all_files
 
   def initialize
@@ -31,12 +33,7 @@ class LsFormatter
   def output_default_format(files)
     files_name_list = files_name(files)
 
-    column = 3
-    line = if ( files_name_list.size % column).zero?
-               files_name_list.size / column
-            else
-               files_name_list.size / column + 1
-            end
+    line = (files_name_list.size.to_f / COLUMN).ceil
 
     divide_by_columns =  files_name_list.each_slice(line).to_a
 
@@ -47,7 +44,7 @@ class LsFormatter
     divide_by_columns.transpose.each do |divide_by_column|
       divide_by_column.each_with_index do |file, idx|
         print file.ljust(20)
-        print "\n" if ((idx + 1) % column).zero?
+        print "\n" if ((idx.next) % COLUMN).zero?
         print "\n" if idx == divide_by_columns.flatten.size - 1
       end
     end
