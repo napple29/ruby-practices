@@ -62,7 +62,7 @@ class LsFormatter
       print file.number_of_links.to_s.rjust(3, ' ')
       print file.owner_name.rjust(13)
       print file.group_name.rjust(6)
-      print file.number_of_bytes_in_the_file.to_s.rjust(5, ' ')
+      print file.bytesize.to_s.rjust(5, ' ')
       print file.last_modified_time.rjust(13)
       print ' ' + file.name
       print "\n"

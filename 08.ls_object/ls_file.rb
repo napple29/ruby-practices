@@ -5,7 +5,7 @@ class LsFile
   FILETYPE = {'01': 'p', '02': 'c', '04': 'd', '06': 'b', '10': '-', '12': 'l', '14': 's'}
   PERMISSIONS = {'0': '---', '1': '--x', '2': '-w-', '3': '-wx', '4': 'r--', '5': 'r-x', '6': 'rw-', '7': 'rwx'}
 
-  attr_reader :file, :name, :file_mode, :number_of_links, :owner_name, :group_name, :number_of_bytes_in_the_file, :last_modified_time, :file_block
+  attr_reader :file, :name, :file_mode, :number_of_links, :owner_name, :group_name, :bytesize, :last_modified_time, :file_block
 
   def initialize(file)
     @file = file
@@ -14,7 +14,7 @@ class LsFile
     @number_of_links = number_of_links
     @owner_name = owner_name
     @group_name = group_name
-    @number_of_bytes_in_the_file = number_of_bytes_in_the_file
+    @bytesize = bytesize
     @last_modified_time = last_modified_time
     @file_block = file_block
   end
@@ -54,7 +54,7 @@ class LsFile
     Etc.getgrgid(fs.gid).name
   end
 
-  def number_of_bytes_in_the_file
+  def bytesize
     File.size(file)
   end
 
