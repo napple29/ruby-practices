@@ -14,8 +14,12 @@ class LsFormatter
     @ls_files = ls_files
   end
 
-  def not_begin_with_a_dot_files
-    ls_files.reject { |file| file.name.start_with?('.') }
+  def self.glob_ls_files(a_option)
+    if a_option
+      Dir.glob('*', File::FNM_DOTMATCH).map { |ls_file| LsFile.new(ls_file) }
+    else
+      Dir.glob('*').map { |ls_file| LsFile.new(ls_file) }
+    end
   end
 
   def output_default_format(ls_files)

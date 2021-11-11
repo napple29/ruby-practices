@@ -16,11 +16,10 @@ class LsCommand
   end
 
   def main
-    ls_files = Dir.glob('*', File::FNM_DOTMATCH).map { |ls_file| LsFile.new(ls_file) }
-    ls_formatter = LsFormatter.new(ls_files)
-
-    ls_files = ls_formatter.not_begin_with_a_dot_files unless a_option
+    ls_files = LsFormatter.glob_ls_files(a_option)
     ls_files = ls_files.reverse if r_option
+
+    ls_formatter = LsFormatter.new(ls_files)
 
     if l_option
       ls_formatter.output_list_in_long_format(ls_files)
