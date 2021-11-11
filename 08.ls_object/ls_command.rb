@@ -13,17 +13,19 @@ class LsCommand
     @a_option = options['a']
     @l_option = options['l']
     @r_option = options['r']
-    @ls_formatter = LsFormatter.new(LsFile.ls_files)
   end
 
   def main
-    files = a_option ? ls_formatter.ls_files : ls_formatter.not_begin_with_a_dot_files
-    files = r_option ? ls_formatter.reverse_files(files) : files
+    ls_files = Dir.glob('*', File::FNM_DOTMATCH).map { |ls_file| LsFile.new(ls_file) }
+    ls_formatter = LsFormatter.new(ls_files)
+
+    ls_files = ls_formatter.not_begin_with_a_dot_files unless a_option
+    ls_files = ls_files.reverse if r_option
 
     if l_option
-      ls_formatter.output_list_in_long_format(files)
+      ls_formatter.output_list_in_long_format(ls_files)
     else
-      ls_formatter.output_default_format(files)
+      ls_formatter.output_default_format(ls_files)
     end
   end
 end

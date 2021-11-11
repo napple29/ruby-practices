@@ -15,57 +15,49 @@ class LsFormatter
   end
 
   def not_begin_with_a_dot_files
-    ls_files.delete_if { |file| file.name.match(/^[.]/) }
+    ls_files.reject { |file| file.name.start_with?('.') }
   end
 
-  def reverse_files(files)
-    files.reverse
-  end
+  def output_default_format(ls_files)
+    file_names = ls_files.map(&:name)
 
-  def files_name(files)
-    files.map(&:name)
-  end
+    line = (file_names.size.to_f / COLUMN).ceil
 
-  def output_default_format(files)
-    files_name_list = files_name(files)
-
-    line = (files_name_list.size.to_f / COLUMN).ceil
-
-    divide_by_columns = files_name_list.each_slice(line).to_a
+    divide_by_columns = file_names.each_slice(line).to_a
 
     unless divide_by_columns.last.size == divide_by_columns.first.size
       (divide_by_columns.first.size - divide_by_columns.last.size).times { divide_by_columns.last.push('') }
     end
 
     divide_by_columns.transpose.each do |divide_by_column|
-      divide_by_column.each_with_index do |file, idx|
-        print file.ljust(20)
+      divide_by_column.each_with_index do |ls_file, idx|
+        print ls_file.ljust(20)
         print "\n" if (idx.next % COLUMN).zero?
         print "\n" if idx == divide_by_columns.flatten.size - 1
       end
     end
   end
 
-  def output_list_in_long_format(files)
-    file_total(files)
-    list_in_long_format(files)
+  def output_list_in_long_format(ls_files)
+    output_total(ls_files)
+    list_in_long_format(ls_files)
   end
 
-  def file_total(files)
-    total = files.map(&:file_block).sum
+  def output_total(ls_files)
+    total = ls_files.map(&:file_block).sum
     puts "total #{total}"
   end
 
-  def list_in_long_format(files)
-    files.each do |file|
-      print file.file_mode.ljust(9)
-      print file.number_of_links.to_s.rjust(3, ' ')
-      print file.owner_name.rjust(13)
-      print file.group_name.rjust(6)
-      print file.bytesize.to_s.rjust(5, ' ')
-      print file.last_modified_time.rjust(13)
+  def list_in_long_format(ls_files)
+    ls_files.each do |ls_file|
+      print ls_file.file_mode.ljust(9)
+      print ls_file.number_of_links.to_s.rjust(3, ' ')
+      print ls_file.owner_name.rjust(13)
+      print ls_file.group_name.rjust(6)
+      print ls_file.bytesize.to_s.rjust(5, ' ')
+      print ls_file.last_modified_time.strftime('%m %d %k:%M').rjust(13)
       print ' '
-      print file.name
+      print ls_file.name
       print "\n"
     end
   end
