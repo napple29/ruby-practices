@@ -33,12 +33,12 @@ class LsFormatter
       (divided_names_by_columns.first.size - divided_names_by_columns.last.size).times { divided_names_by_columns.last.push('') }
     end
 
-    divided_names_by_columns_size = divided_names_by_columns.flatten.size - 1
+    file_names_last_index = file_names.size - 1
 
     divided_names_by_columns.transpose.each do |divided_names_by_column|
       divided_names_by_column.each_with_index do |ls_file, idx|
         print ls_file.ljust(20)
-        print "\n" if (idx.next % COLUMN).zero? || idx == divided_names_by_columns_size
+        print "\n" if (idx.next % COLUMN).zero? || idx == file_names_last_index
       end
     end
   end
