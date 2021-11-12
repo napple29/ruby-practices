@@ -7,28 +7,26 @@ require 'etc'
 require_relative './ls_formatter'
 
 class LsCommand
-  attr_reader :a_option, :l_option, :r_option, :ls_formatter
+  attr_reader :a_option, :l_option, :r_option
 
-  def initialize(**options)
+  def initialize(options)
     @a_option = options['a']
     @l_option = options['l']
     @r_option = options['r']
   end
 
   def main
-    ls_files = LsFormatter.glob_ls_files(a_option)
+    glob_option = a_option ? File::FNM_DOTMATCH : 0
+    ls_files = Dir.glob('*', glob_option).map { |ls_file| LsFile.new(ls_file) }
+
     ls_files = ls_files.reverse if r_option
 
     ls_formatter = LsFormatter.new(ls_files)
 
-    if l_option
-      ls_formatter.output_list_in_long_format(ls_files)
-    else
-      ls_formatter.output_default_format(ls_files)
-    end
+    ls_formatter.output(long_format: l_option)
   end
 end
 
 options = ARGV.getopts('a', 'l', 'r')
-ls_command = LsCommand.new(**options)
+ls_command = LsCommand.new(options)
 ls_command.main

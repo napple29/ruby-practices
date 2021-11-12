@@ -7,11 +7,11 @@ class LsFile
   FILETYPE = { '01': 'p', '02': 'c', '04': 'd', '06': 'b', '10': '-', '12': 'l', '14': 's' }.freeze
   PERMISSIONS = { '0': '---', '1': '--x', '2': '-w-', '3': '-wx', '4': 'r--', '5': 'r-x', '6': 'rw-', '7': 'rwx' }.freeze
 
-  attr_reader :file, :fs
+  attr_reader :file, :file_stat
 
   def initialize(file)
     @file = file
-    @fs = File::Stat.new(file)
+    @file_stat = File::Stat.new(file)
   end
 
   def name
@@ -19,7 +19,7 @@ class LsFile
   end
 
   def file_mode
-    mode_num = fs.mode.to_s(8).rjust(6, '0')
+    mode_num = file_stat.mode.to_s(8).rjust(6, '0')
     filetype_num = mode_num[0..1]
     permissions_num = mode_num[3..5]
     filetype = convert_to_filetype(filetype_num)
@@ -30,15 +30,15 @@ class LsFile
   end
 
   def number_of_links
-    fs.nlink
+    file_stat.nlink
   end
 
   def owner_name
-    Etc.getpwuid(fs.uid).name
+    Etc.getpwuid(file_stat.uid).name
   end
 
   def group_name
-    Etc.getgrgid(fs.gid).name
+    Etc.getgrgid(file_stat.gid).name
   end
 
   def bytesize
@@ -50,7 +50,7 @@ class LsFile
   end
 
   def file_block
-    File.stat(file).blocks
+    file_stat.blocks
   end
 
   def convert_to_filetype(filetype_num)

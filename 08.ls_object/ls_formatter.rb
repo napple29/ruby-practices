@@ -14,11 +14,11 @@ class LsFormatter
     @ls_files = ls_files
   end
 
-  def self.glob_ls_files(a_option)
-    if a_option
-      Dir.glob('*', File::FNM_DOTMATCH).map { |ls_file| LsFile.new(ls_file) }
+  def output(long_format: l_option)
+    if long_format
+      output_list_in_long_format(ls_files)
     else
-      Dir.glob('*').map { |ls_file| LsFile.new(ls_file) }
+      output_default_format(ls_files)
     end
   end
 
@@ -27,17 +27,18 @@ class LsFormatter
 
     line = (file_names.size.to_f / COLUMN).ceil
 
-    divide_by_columns = file_names.each_slice(line).to_a
+    divided_names_by_columns = file_names.each_slice(line).to_a
 
-    unless divide_by_columns.last.size == divide_by_columns.first.size
-      (divide_by_columns.first.size - divide_by_columns.last.size).times { divide_by_columns.last.push('') }
+    unless divided_names_by_columns.last.size == divided_names_by_columns.first.size
+      (divided_names_by_columns.first.size - divided_names_by_columns.last.size).times { divided_names_by_columns.last.push('') }
     end
 
-    divide_by_columns.transpose.each do |divide_by_column|
-      divide_by_column.each_with_index do |ls_file, idx|
+    divided_names_by_columns_size = divided_names_by_columns.flatten.size - 1
+
+    divided_names_by_columns.transpose.each do |divided_names_by_column|
+      divided_names_by_column.each_with_index do |ls_file, idx|
         print ls_file.ljust(20)
-        print "\n" if (idx.next % COLUMN).zero?
-        print "\n" if idx == divide_by_columns.flatten.size - 1
+        print "\n" if (idx.next % COLUMN).zero? || idx == divided_names_by_columns_size
       end
     end
   end
