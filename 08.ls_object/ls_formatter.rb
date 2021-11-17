@@ -14,8 +14,8 @@ class LsFormatter
     @ls_files = ls_files
   end
 
-  def output(long_format: l_option)
-    if long_format
+  def output(l_option)
+    if l_option
       output_list_in_long_format(ls_files)
     else
       output_default_format(ls_files)

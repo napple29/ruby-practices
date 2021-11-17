@@ -23,7 +23,7 @@ class LsCommand
 
     ls_formatter = LsFormatter.new(ls_files)
 
-    ls_formatter.output(long_format: l_option)
+    ls_formatter.output(l_option)
   end
 end
 
